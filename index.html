@@ -96,6 +96,10 @@ h1,h2,h3,.display{font-family:'Funnel Display',sans-serif;letter-spacing:-.01em}
 .back:active{background:var(--paper)}
 .offer-title h2{font-size:36px;font-weight:800;line-height:1.1}
 .offer-title .chip.live{color:var(--ok)}
+.offer-title .chip.pilot{color:#2f7de1}
+.chip.draft{color:#a06b00;background:#fff8e1;border-style:dashed}
+.chip[hidden]{display:none}
+.chip.pilot-tile{color:#7fb2ff}
 .tabs{display:flex;gap:6px;margin-top:16px;overflow-x:auto;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
 .tab{flex:1;min-width:150px;min-height:64px;padding:10px 14px 12px;text-align:left;border-bottom:4px solid transparent;color:var(--muted);font-weight:700;font-size:19px;display:flex;flex-direction:column;justify-content:center}
@@ -357,8 +361,8 @@ input[type=range]::-moz-range-thumb{width:44px;height:44px;border-radius:50%;bac
           <button class="tile" data-open="cannaleo">
             <div class="ico"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="7" height="7" rx="2"/><rect x="14" y="13" width="7" height="7" rx="2"/><path d="M10 7.5h3.5a2 2 0 0 1 2 2V13"/><path d="M14 16.5h-3.5a2 2 0 0 1-2-2V11"/></svg></div>
             <h2>Cannaleo-Anbindung</h2>
-            <p>Die Plattform für Medizinalcannabis mit den Abläufen Ihrer Apotheke verbinden.</p>
-            <div class="foot"><span class="chip live"><span class="dot"></span>Live</span><span class="arrow"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+            <p>Bestellungen von der Plattform für Medizinalcannabis direkt in ADG S3000.</p>
+            <div class="foot"><span class="chip pilot-tile"><span class="dot"></span>Pilot</span><span class="arrow"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
           </button>
           <button class="tile soft" data-open="trust">
             <div class="ico"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></div>
@@ -377,7 +381,8 @@ input[type=range]::-moz-range-thumb{width:44px;height:44px;border-radius:50%;bac
         <div class="offer-title">
           <button class="back" data-home aria-label="Zurück"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
           <h2 id="offerTitle"></h2>
-          <span class="chip live" id="offerChip"><span class="dot"></span>Live</span>
+          <span class="chip live" id="offerChip"><span class="dot"></span><span id="offerStatus">Live</span></span>
+          <span class="chip draft" id="offerDraft" hidden>Entwurf</span>
         </div>
         <nav class="tabs" id="tabs"></nav>
       </div>
@@ -537,7 +542,7 @@ function ph(title,items){return '<div class="ph"><b>Platzhalter · Text folgt</b
 
 var OFFERS={
  abgleich:{
-  title:'Rechnungsabgleich', interest:'Rechnungsabgleich',
+  title:'Rechnungsabgleich', interest:'Rechnungsabgleich', status:'Live',
   steps:[
    {tab:'Problem', html:
     '<div class="mono eyebrow">Das Problem</div>'+
@@ -626,20 +631,62 @@ var OFFERS={
     '<p class="src">Zeitraum 1. bis 24. September 2026. Vollständige Fallstudie auf gaind.ai.</p>'}
   ]},
  cannaleo:{
-  title:'Cannaleo-Anbindung', interest:'Cannaleo-Anbindung',
+  title:'Cannaleo-Anbindung', interest:'Cannaleo-Anbindung', status:'Pilot', draft:true,
   steps:[
-   {tab:'Problem', html:'<div class="mono eyebrow">Das Problem</div><h3>Cannaleo-Anbindung</h3>'+
-     ph('Ausgangslage in der Apotheke, ohne Anbindung.',['Was muss das Team heute bei Cannaleo-Bestellungen von Hand tun?','Wie oft kommt das vor (Fälle pro Woche oder Monat)?','Wo entstehen Fehler oder Wartezeiten?'])},
-   {tab:'Lösung', html:'<div class="mono eyebrow">Die Lösung</div><h3>Cannaleo-Anbindung</h3>'+
-     ph('Was die Anbindung tut.',['Welche Daten fließen von wo nach wo (Cannaleo, Warenwirtschaft, Mail, Shop)?','Was passiert automatisch, was gibt das Team frei?','Was ändert sich nicht (kein Systemwechsel?)'])},
-   {tab:'Ablauf', html:'<div class="mono eyebrow">So läuft es</div><h3>Cannaleo-Anbindung</h3>'+
-     ph('Ablauf in drei bis vier Schritten, je mit „Sie“ oder „automatisch“.')},
-   {tab:'Nutzen &amp; Preis', html:'<div class="mono eyebrow">Nutzen und Preis</div><h3>Cannaleo-Anbindung</h3>'+
-     ph('Nutzen in einer Zahl oder einem Satz (Zeit, Fehler, Durchlauf).')+
-     '<div class="grid2"><div class="card dark price"><div class="mono" style="color:var(--accent-soft)">Preisrahmen</div><p style="margin-top:12px;font-size:21px;color:#e2e2ea">Als weitere Automatisierung in den Paketen Plus und Komplett, oder einzeln: ab 490 € einmalig und ab 49 € im Monat.</p><p class="fine" style="color:#9a9aab">Alle Preise netto. Unverbindliche Übersicht, verbindlich ist Ihr schriftliches Angebot.</p></div>'+
-     '<div class="ph" style="margin-top:0"><b>Zu bestätigen</b>Gilt dieser Preisrahmen aus dem Preisblatt (weitere Automatisierung) auch für Cannaleo?</div></div>'},
-   {tab:'Praxisbeispiel', html:'<div class="mono eyebrow">Aus der Praxis</div><h3>Cannaleo-Anbindung</h3>'+
-     ph('Praxisbeispiel, nur mit Freigabe der Apotheke.',['Bei welcher Apotheke läuft die Anbindung?','Darf sie genannt werden?','Gibt es eine belegte Zahl?'])}
+   {tab:'Problem', html:
+    '<div class="mono eyebrow">Das Problem</div>'+
+    '<h3>Cannabis-Bestellungen kommen an ADG vorbei.</h3>'+
+    '<p class="intro">Bestellungen über Cannaleo landen im Cannaleo-Portal. In der Warenwirtschaft kommen sie nicht von allein an: Jemand muss sie dort entdecken, abtippen und als Auftrag anlegen.</p>'+
+    '<div class="grid3">'+
+     '<div class="card"><div class="ico">'+I.swap+'</div><h4>Doppelte Erfassung</h4><p>Name, Anschrift, Sorten und Mengen werden von Hand übertragen, mit jedem Tippfehler, der dazugehört.</p></div>'+
+     '<div class="card"><div class="ico">'+I.clock+'</div><h4>Ein Portal mehr im Blick</h4><p>Neue Bestellungen muss jemand im Portal bemerken, neben Offizin, Telefon und Botendienst.</p></div>'+
+     '<div class="card"><div class="ico">'+I.shield+'</div><h4>Sensible Daten</h4><p>Es geht um Patientinnen, Patienten und Verordnungen. Jeder zusätzliche Zettel ist einer zu viel.</p></div>'+
+    '</div>'},
+   {tab:'Lösung', html:
+    '<div class="mono eyebrow">Die Lösung</div>'+
+    '<h3>Cannaleo-Bestellungen erscheinen direkt in ADG.</h3>'+
+    '<p class="intro">Wir holen neue Bestellungen automatisch bei Cannaleo ab und stellen sie ADG S3000 über die Webshop-Schnittstelle bereit, über die ADG auch Bestellungen anderer Plattformen abruft. An der Kasse übernehmen Sie sie wie eine Webshop-Bestellung.</p>'+
+    '<div class="grid3">'+
+     '<div class="card"><div class="ico">'+I.file+'</div><h4>Über die vorhandene ADG-Schnittstelle</h4><p>Kein Eingriff in ADG, kein Systemwechsel. Die Sorten stehen beim Übernehmen als Hinweis dabei.</p></div>'+
+     '<div class="card"><div class="ico">'+I.list+'</div><h4>Bei Cannaleo nur lesend</h4><p>Wir ändern dort nichts. Übernommen werden nur neue und bestätigte Bestellungen, jede genau einmal.</p></div>'+
+     '<div class="card"><div class="ico">'+I.shield+'</div><h4>Erst Ihre Freigabe</h4><p>Zum Start geben Sie die Übergabe frei, später läuft sie automatisch. Das Protokoll enthält keine Personendaten.</p></div>'+
+    '</div>'+
+    '<div class="grid2">'+
+     '<div class="card dark"><h4>Was sich nicht ändert</h4><ul class="list"><li>ADG bleibt Ihr führendes System</li><li>Bearbeitung wie bei jeder Webshop-Bestellung</li><li>Rezeptprüfung bleibt bei Ihnen</li></ul></div>'+
+     '<div class="card"><h4>Ehrliche Grenzen</h4><p>Cannaleo liefert über die Schnittstelle keinen Preis und keine Rezeptbilder. Den Preis setzen Sie in ADG, das Rezept prüfen Sie wie gewohnt.</p></div>'+
+    '</div>'},
+   {tab:'Ablauf', html:
+    '<div class="mono eyebrow">So läuft es</div>'+
+    '<h3>Von der Bestellung bis zur Kasse.</h3>'+
+    '<div class="flow" data-flow>'+
+     '<button class="step on"><span class="num">1</span><h4>Bestellung bei Cannaleo</h4><p>Die Bestellung geht wie bisher über die Plattform ein.</p><p class="more">Übernommen werden Bestellungen mit dem Status neu oder bestätigt.</p><span class="who">Cannaleo</span></button>'+
+     '<button class="step"><span class="num">2</span><h4>Abholen</h4><p>Alle 10 Minuten holen wir neue Bestellungen ab.</p><p class="more">Nur lesend. Ein Protokoll ohne Personendaten hält fest, was übergeben wurde.</p><span class="who we">Automatisch</span></button>'+
+     '<button class="step"><span class="num">3</span><h4>Für ADG bereitstellen</h4><p>Im Format, das ADG von Webshop-Bestellungen kennt.</p><p class="more">Jede Bestellung geht nur einmal raus, auch wenn ADG mehrfach abfragt.</p><span class="who we">Automatisch</span></button>'+
+     '<button class="step"><span class="num">4</span><h4>Übernehmen in ADG</h4><p>ADG ruft die Bestellung ab, Sie übernehmen sie an der Kasse.</p><p class="more">Die Sorten erscheinen beim Übernehmen als Hinweis. Preis setzen, Rezept prüfen, fertig.</p><span class="who you">Sie</span></button>'+
+    '</div>'+
+    '<p class="tapnote">'+I.tap+'Schritt antippen für Details</p>'+
+    '<div class="start-row">'+
+     '<div class="card dark"><div class="mono" style="color:var(--accent-soft)">So starten Sie</div>'+
+      '<div class="mini-steps"><div><b>Fit-Check</b>30 Minuten: Passt es zu Ihrem Ablauf?</div><div><b>Testlauf</b>Mit erfundenen Bestellungen, bis an Ihre Kasse.</div><div><b>Freigabe</b>Echte Daten erst nach AVV und Verpflichtung nach §&nbsp;203&nbsp;StGB.</div></div></div>'+
+     '<div class="card"><div class="mono" style="color:var(--muted)">Voraussetzungen</div><ul class="list"><li>ADG S3000 mit Webshop-Schnittstelle</li><li>Partnerzugang zur Cannaleo-Schnittstelle</li><li>Lieferung per Versand</li></ul></div>'+
+    '</div>'},
+   {tab:'Nutzen &amp; Preis', html:
+    '<div class="mono eyebrow">Nutzen und Preis</div>'+
+    '<h3>Kein Abtippen mehr.</h3>'+
+    '<div class="grid2">'+
+     '<div class="card"><h4>Das bringt es</h4><ul class="list"><li>Bestellungen landen von selbst in ADG</li><li>Keine Übertragungsfehler bei Name und Anschrift</li><li>Alle 10 Minuten aktuell, statt wenn jemand ins Portal schaut</li><li>Weniger Patientendaten auf Zetteln und in Mails</li></ul></div>'+
+     '<div class="card dark price"><div class="mono" style="color:var(--accent-soft)">Preisrahmen</div><p style="margin-top:12px;font-size:21px;color:#e2e2ea">Als weitere Automatisierung in den Paketen Plus und Komplett, oder einzeln: ab 490 € einmalig und ab 49 € im Monat.</p><p class="fine" style="color:#9a9aab">Alle Preise netto. Unverbindliche Übersicht, verbindlich ist Ihr schriftliches Angebot.</p></div>'+
+    '</div>'+
+    ph('Eine belegte Zahl fehlt noch.',['Wie viele Cannaleo-Bestellungen hat die Pilotapotheke im Monat?','Wie lange dauert eine Bestellung heute von Hand?'])},
+   {tab:'Praxisbeispiel', html:
+    '<div class="mono eyebrow">Aus der Praxis</div>'+
+    '<h3>Im Pilot mit einer Apotheke in Koblenz</h3>'+
+    '<p class="intro">Die Übergabe haben wir direkt an der ADG-Kasse der Apotheke getestet: Die Testbestellung kam als Webshop-Bestellung an, die Sorten erschienen beim Übernehmen.</p>'+
+    '<div class="grid2">'+
+     '<div class="card"><h4>Heute schon</h4><ul class="list"><li>Abruf und Übergabe gebaut, mit Testdaten geprüft</li><li>Übergabe an der ADG-Kasse getestet (September 2026)</li></ul></div>'+
+     '<div class="card"><h4>Als Nächstes</h4><ul class="list"><li>Umstellung auf echte Bestellungen nach Freigabe</li><li>Bearbeitungsstatus zurück an Cannaleo</li></ul></div>'+
+    '</div>'+
+    ph('Nur mit Freigabe der Apotheke.',['Darf die Apotheke genannt werden?','Seit wann laufen echte Bestellungen?'])}
   ]}
 };
 
@@ -669,6 +716,7 @@ function openOffer(key){
   var o=OFFERS[key]; if(!o)return;
   currentOffer=key;
   $('#offerTitle').textContent=o.title;
+  $('#offerStatus').textContent=o.status||'Live';$('#offerChip').classList.toggle('pilot',o.status==='Pilot');$('#offerDraft').hidden=!o.draft;
   $('#tabs').innerHTML=o.steps.map(function(s,i){return '<button class="tab" data-i="'+i+'"><span class="n">0'+(i+1)+'</span>'+s.tab+'</button>'}).join('');
   $('#track').innerHTML=o.steps.map(function(s){return '<div class="panel"><div class="panel-inner">'+s.html+'</div></div>'}).join('');
   $('#dots').innerHTML=o.steps.map(function(){return '<i></i>'}).join('');
