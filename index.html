@@ -266,6 +266,13 @@ input[type=range]::-moz-range-thumb{width:44px;height:44px;border-radius:50%;bac
 .thanks .sub{margin:12px auto 0}
 .thanks .state{margin-top:18px;font-size:16px;color:var(--muted);font-family:'IBM Plex Mono',monospace;letter-spacing:.06em;text-transform:uppercase}
 
+/* Datenschutzhinweis */
+#privacySheet{z-index:30}
+.dl{margin-top:18px;display:grid;grid-template-columns:220px 1fr;gap:12px 20px;font-size:18px}
+.dl dt{font-weight:700}
+.dl dd{color:#3a3a46}
+@media (max-width:700px){.dl{grid-template-columns:1fr}}
+
 /* Admin */
 .admin h2{font-size:34px}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}
@@ -436,7 +443,7 @@ input[type=range]::-moz-range-thumb{width:44px;height:44px;border-radius:50%;bac
         </div>
         <button type="button" class="consent" id="consent" aria-pressed="false">
           <span class="box"><svg class="check-svg" width="24" height="24" viewBox="0 0 20 20"><path d="M4.5 10.5l3.5 3.5 7-8" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          <span class="txt" id="consentText">Ja, die gaind UG (haftungsbeschränkt) darf mich per E-Mail kontaktieren und mir Informationen zu den genannten Themen senden. Meine Angaben werden dafür gespeichert. Ich kann die Einwilligung jederzeit per E-Mail an hallo@gaind.ai widerrufen. Details in der <a href="https://gaind.ai/datenschutz" target="_blank" rel="noopener" id="privacyLink">Datenschutzerklärung</a>.</span>
+          <span class="txt" id="consentText">Ja, die gaind UG (haftungsbeschränkt) darf mich per E-Mail kontaktieren und mir Informationen zu den genannten Themen senden. Meine Angaben werden dafür gespeichert. Ich kann die Einwilligung jederzeit per E-Mail an hallo@gaind.ai widerrufen. Details im <a href="#" id="privacyLink">Datenschutzhinweis</a>.</span>
         </button>
         <div class="form-foot">
           <p class="fine">Pflichtfelder: Name, Apotheke, E-Mail und Einwilligung.</p>
@@ -451,6 +458,26 @@ input[type=range]::-moz-range-thumb{width:44px;height:44px;border-radius:50%;bac
       <p class="state" id="thanksState"></p>
       <div style="margin-top:26px"><button class="btn btn-light" data-close>Fertig</button></div>
     </div>
+  </div>
+</div>
+
+<!-- Datenschutzhinweis (offline verfügbar) -->
+<div class="sheet-bg" id="privacySheet" aria-hidden="true">
+  <div class="sheet privacy" role="dialog" aria-modal="true">
+    <button class="x" data-close aria-label="Schließen"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <h2>Datenschutzhinweis</h2>
+    <p class="sub">Zur Kontaktaufnahme nach der Messe</p>
+    <dl class="dl">
+      <dt>Verantwortlich</dt><dd>gaind UG (haftungsbeschränkt), c/o Particulate Solutions GmbH, Bubenheimer Bann 10, 56070 Koblenz, hallo@gaind.ai</dd>
+      <dt>Welche Daten</dt><dd>Name, E-Mail-Adresse, Name der Apotheke, gewählte Themen und der Zeitpunkt Ihrer Einwilligung.</dd>
+      <dt>Wozu</dt><dd>Damit wir Sie nach der Messe kontaktieren und Ihnen Informationen zu den genannten Themen senden können.</dd>
+      <dt>Rechtsgrundlage</dt><dd>Ihre Einwilligung (Art. 6 Abs. 1 lit. a DSGVO).</dd>
+      <dt>Wo die Daten liegen</dt><dd>Bis zur Übertragung auf diesem Gerät, danach in unserem Kundenverwaltungssystem (Twenty). Übertragung und Speicherung laufen über Server, die wir beim Hoster Hostinger betreiben. Wir geben die Daten nicht an Dritte weiter.</dd>
+      <dt>Wie lange</dt><dd>Bis Sie widerrufen oder klar ist, dass kein Interesse besteht. Dann löschen wir die Daten.</dd>
+      <dt>Ihre Rechte</dt><dd>Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit und Beschwerde bei einer Aufsichtsbehörde. Ihre Einwilligung können Sie jederzeit mit Wirkung für die Zukunft widerrufen, eine E-Mail an hallo@gaind.ai genügt.</dd>
+    </dl>
+    <p class="fine">Allgemeine Datenschutzerklärung: gaind.ai/datenschutz</p>
+    <div style="margin-top:22px"><button class="btn btn-light" data-close>Zurück</button></div>
   </div>
 </div>
 
@@ -706,7 +733,7 @@ function bindPanel(){
 var idleT;
 function resetIdle(){clearTimeout(idleT);idleT=setTimeout(function(){
   if($('#adminSheet').classList.contains('open'))return;
-  closeSheet($('#leadSheet'));resetForm();show('home')},180000)}
+  closeSheet($('#privacySheet'));closeSheet($('#leadSheet'));resetForm();show('home')},180000)}
 ['pointerdown','keydown','input'].forEach(function(ev){document.addEventListener(ev,resetIdle,{passive:true})});resetIdle();
 
 /* ---------- Sheets ---------- */
@@ -729,7 +756,7 @@ $('#leadBtn').addEventListener('click',function(){
 });
 $('#interest').addEventListener('click',function(e){var b=e.target.closest('button');if(b)b.classList.toggle('on')});
 $('#consent').addEventListener('click',function(e){if(e.target.closest('a'))return;consentOn=!consentOn;this.classList.toggle('on',consentOn);this.classList.remove('bad');this.setAttribute('aria-pressed',String(consentOn))});
-$('#privacyLink').addEventListener('click',function(e){if(!navigator.onLine){e.preventDefault();toast('Kein Netz. Datenschutzerklärung: gaind.ai/datenschutz')}});
+$('#privacyLink').addEventListener('click',function(e){e.preventDefault();e.stopPropagation();openSheet($('#privacySheet'))});
 $$('.field input').forEach(function(i){i.addEventListener('input',function(){i.closest('.field').classList.remove('bad')})});
 $('#name').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();$('#apo').focus()}});
 $('#apo').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();$('#mail').focus()}});

@@ -1,5 +1,5 @@
 /* gaind ADG 2026: Offline-Cache für die Messe-App */
-var CACHE='gaind-adg-da7392b005';
+var CACHE='gaind-adg-0d588ba3cd';
 var ASSETS=['./','manifest.json','icon-180.png'];
 self.addEventListener('install',function(e){
   e.waitUntil(caches.open(CACHE).then(function(c){return c.addAll(ASSETS)}).then(function(){return self.skipWaiting()}));
