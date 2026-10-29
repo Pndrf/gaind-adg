@@ -362,7 +362,7 @@ input[type=range]::-moz-range-thumb{width:44px;height:44px;border-radius:50%;bac
             <div class="ico"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="7" height="7" rx="2"/><rect x="14" y="13" width="7" height="7" rx="2"/><path d="M10 7.5h3.5a2 2 0 0 1 2 2V13"/><path d="M14 16.5h-3.5a2 2 0 0 1-2-2V11"/></svg></div>
             <h2>Cannaleo-Anbindung</h2>
             <p>Bestellungen von der Plattform für Medizinalcannabis direkt in ADG S3000.</p>
-            <div class="foot"><span class="chip pilot-tile"><span class="dot"></span>Pilot</span><span class="arrow"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+            <div class="foot"><span class="chip live"><span class="dot"></span>Live</span><span class="arrow"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
           </button>
           <button class="tile soft" data-open="trust">
             <div class="ico"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></div>
@@ -631,7 +631,7 @@ var OFFERS={
     '<p class="src">Zeitraum 1. bis 24. September 2026. Vollständige Fallstudie auf gaind.ai.</p>'}
   ]},
  cannaleo:{
-  title:'Cannaleo-Anbindung', interest:'Cannaleo-Anbindung', status:'Pilot', draft:true,
+  title:'Cannaleo-Anbindung', interest:'Cannaleo-Anbindung', status:'Live', draft:false,
   steps:[
    {tab:'Problem', html:
     '<div class="mono eyebrow">Das Problem</div>'+
@@ -676,17 +676,15 @@ var OFFERS={
     '<div class="grid2">'+
      '<div class="card"><h4>Das bringt es</h4><ul class="list"><li>Bestellungen landen von selbst in ADG</li><li>Keine Übertragungsfehler bei Name und Anschrift</li><li>Alle 10 Minuten aktuell, statt wenn jemand ins Portal schaut</li><li>Weniger Patientendaten auf Zetteln und in Mails</li></ul></div>'+
      '<div class="card dark price"><div class="mono" style="color:var(--accent-soft)">Preisrahmen</div><p style="margin-top:12px;font-size:21px;color:#e2e2ea">Als weitere Automatisierung in den Paketen Plus und Komplett, oder einzeln: ab 490 € einmalig und ab 49 € im Monat.</p><p class="fine" style="color:#9a9aab">Alle Preise netto. Unverbindliche Übersicht, verbindlich ist Ihr schriftliches Angebot.</p></div>'+
-    '</div>'+
-    ph('Eine belegte Zahl fehlt noch.',['Wie viele Cannaleo-Bestellungen hat die Pilotapotheke im Monat?','Wie lange dauert eine Bestellung heute von Hand?'])},
+    '</div>'},
    {tab:'Praxisbeispiel', html:
     '<div class="mono eyebrow">Aus der Praxis</div>'+
-    '<h3>Im Pilot mit einer Apotheke in Koblenz</h3>'+
-    '<p class="intro">Die Übergabe haben wir direkt an der ADG-Kasse der Apotheke getestet: Die Testbestellung kam als Webshop-Bestellung an, die Sorten erschienen beim Übernehmen.</p>'+
+    '<h3>Im Einsatz bei einer Apotheke in Koblenz</h3>'+
+    '<p class="intro">Bevor echte Bestellungen liefen, haben wir die Übergabe direkt an der ADG-Kasse der Apotheke getestet: Die Testbestellung kam als Webshop-Bestellung an, die Sorten erschienen beim Übernehmen.</p>'+
     '<div class="grid2">'+
-     '<div class="card"><h4>Heute schon</h4><ul class="list"><li>Abruf und Übergabe gebaut, mit Testdaten geprüft</li><li>Übergabe an der ADG-Kasse getestet (September 2026)</li></ul></div>'+
-     '<div class="card"><h4>Als Nächstes</h4><ul class="list"><li>Umstellung auf echte Bestellungen nach Freigabe</li><li>Bearbeitungsstatus zurück an Cannaleo</li></ul></div>'+
-    '</div>'+
-    ph('Nur mit Freigabe der Apotheke.',['Darf die Apotheke genannt werden?','Seit wann laufen echte Bestellungen?'])}
+     '<div class="card"><h4>Heute schon</h4><ul class="list"><li>Cannaleo-Bestellungen kommen automatisch in ADG an</li><li>Übergabe vorab an der ADG-Kasse getestet (September 2026)</li></ul></div>'+
+     '<div class="card"><h4>Als Nächstes</h4><ul class="list"><li>Bearbeitungsstatus zurück an Cannaleo</li></ul></div>'+
+    '</div>'}
   ]}
 };
 
