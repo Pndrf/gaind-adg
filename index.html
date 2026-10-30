@@ -87,6 +87,21 @@ h1,h2,h3,.display{font-family:'Funnel Display',sans-serif;letter-spacing:-.01em}
 .tile .arrow{width:52px;height:52px;border-radius:50%;background:#fff;color:var(--ink);display:flex;align-items:center;justify-content:center;flex:none}
 .tile.soft{background:transparent}
 .tile.soft h2{font-size:30px}
+/* Kleine Kacheln (Preise, So arbeiten wir) stehen rechts übereinander */
+.tiles .tile:not(.soft){grid-row:span 2}
+.tile.soft{min-height:0;padding:24px 26px 24px}
+.soft-head{display:flex;align-items:center;gap:16px}
+.tile.soft .ico{width:52px;height:52px;border-radius:15px;flex:none}
+.tile.soft .soft-head h2{margin-top:0;flex:1}
+.tile.soft .arrow{width:46px;height:46px}
+.tile.soft p{font-size:18px}
+.tile.soft .foot{padding-top:12px}
+@media (min-width:1101px){
+  .tile.soft{padding:22px 24px}
+  .tile.soft .ico{display:none}
+  .tile.soft .soft-head h2{font-size:28px;white-space:nowrap}
+  .tile.soft p{font-size:17px;margin-top:8px}
+}
 .home-hint{margin-top:30px;color:#7d7d8e;font-size:17px;display:flex;align-items:center;gap:10px}
 
 /* ---------- Angebot ---------- */
@@ -223,7 +238,37 @@ input[type=range]::-moz-range-thumb{width:44px;height:44px;border-radius:50%;bac
 .ph-inline{border-bottom:2px dashed #e0a100;background:#fff8e1;padding:0 4px;border-radius:4px}
 
 /* Vertrauen */
-#trust .panel{padding-bottom:60px}
+#trust .panel,#pricing .panel{padding-bottom:60px}
+
+/* Preise */
+.offer-title .chip.stand{color:var(--muted)}
+.ptable{margin-top:30px;background:#fff;border:1.5px solid var(--line);border-radius:var(--r);overflow:hidden}
+.ptable .pr{display:grid;grid-template-columns:1.15fr repeat(3,1fr);border-top:1px solid var(--line)}
+.ptable .pr:first-child{border-top:0}
+.ptable .pr > div{padding:18px 22px}
+.ptable .pr > div + div{border-left:1px solid var(--line)}
+.ptable .ph-row{background:var(--ink);color:#fff;position:relative}
+.ptable .ph-row::after{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:var(--grad)}
+.ptable .ph-row > div{padding-top:24px}
+.ptable .ph-row > div + div{border-left-color:#2c2c3a}
+.ptable .tier{font-family:'Funnel Display',sans-serif;font-weight:800;font-size:30px;line-height:1.1}
+.ptable .tsub{font-size:16px;color:#c4c4d0;margin-top:6px;line-height:1.35}
+.ptable .ph-row .mono{font-size:12.5px;color:var(--accent-soft);margin-top:12px}
+.ptable .lbl b{display:block;font-size:19px}
+.ptable .lbl span{display:block;font-size:15px;color:var(--muted);margin-top:2px}
+.ptable .val{font-family:'Funnel Display',sans-serif;font-weight:800;font-size:28px;line-height:1.1;font-variant-numeric:tabular-nums}
+.ptable .val.main{font-size:44px}
+.ptable .val small{display:block;font-family:'Funnel Sans',sans-serif;font-weight:400;font-size:15px;color:var(--muted);margin-top:6px;line-height:1.35}
+.sec{margin-top:46px}
+.calc-ex .formula{font-family:'IBM Plex Mono',monospace;font-weight:500;font-size:19px;color:#e2e2ea;margin-top:16px;line-height:1.6}
+.calc-ex .amount{font-family:'Funnel Display',sans-serif;font-weight:800;font-size:56px;line-height:1;margin-top:14px}
+.calc-ex .amount span{font-size:22px;font-weight:700;margin-left:6px}
+.calc-ex .per{color:#c4c4d0;font-size:18px;margin-top:6px}
+.calc-ex .rows{margin-top:18px;border-top:1px solid #2c2c3a}
+.calc-ex .rows div{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid #2c2c3a;font-size:18px}
+.calc-ex .rows b{white-space:nowrap}
+.cond{font-size:19px;color:#454552;margin-top:8px}
+.p-foot{margin-top:30px;font-size:16px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
 .trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:30px}
 .split{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:22px}
 
@@ -303,7 +348,7 @@ input[type=range]::-moz-range-thumb{width:44px;height:44px;border-radius:50%;bac
 /* Hochformat und kleinere Screens */
 @media (max-width:1100px){
   .tiles{grid-template-columns:1fr 1fr}
-  .tile.soft{grid-column:1/-1;min-height:0}
+  .tiles .tile:not(.soft){grid-row:auto}
   .grid3,.trust-grid{grid-template-columns:1fr 1fr}
   .flow,.grid4{grid-template-columns:1fr 1fr}
   .calc,.case,.pain,.start-row{grid-template-columns:1fr}
@@ -321,6 +366,8 @@ input[type=range]::-moz-range-thumb{width:44px;height:44px;border-radius:50%;bac
   .home-inner{padding:28px 16px}
   .sheet{padding:30px 20px}
   .bank .row{grid-template-columns:70px 1fr 90px}
+  .ptable{overflow-x:auto}
+  .ptable .pr{min-width:640px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -364,11 +411,16 @@ input[type=range]::-moz-range-thumb{width:44px;height:44px;border-radius:50%;bac
             <p>Bestellungen von der Plattform für Medizinalcannabis direkt in ADG S3000.</p>
             <div class="foot"><span class="chip live"><span class="dot"></span>Live</span><span class="arrow"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
           </button>
+          <button class="tile soft" data-open="pricing">
+            <div class="soft-head"><div class="ico"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.5"/></svg></div>
+            <h2>Preise</h2><span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+            <p>Alle Stufen, Bedingungen und ein Rechenbeispiel.</p>
+            <div class="foot"><span class="proof">ab 89 € im Monat</span></div>
+          </button>
           <button class="tile soft" data-open="trust">
-            <div class="ico"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></div>
-            <h2>So arbeiten wir</h2>
+            <div class="soft-head"><div class="ico"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></div>
+            <h2>So arbeiten wir</h2><span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
             <p>Datenschutz, Betrieb und wer was macht.</p>
-            <div class="foot"><span></span><span class="arrow"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
           </button>
         </div>
         <div class="home-hint"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 11V5a2 2 0 1 1 4 0v6"/><path d="M13 9.5a2 2 0 1 1 4 0V13"/><path d="M17 11.5a2 2 0 1 1 4 0V15a7 7 0 0 1-7 7h-1.5a6 6 0 0 1-5-2.7L4 15.5a2 2 0 0 1 3.2-2.4L9 15"/></svg>Thema antippen, dann wischen oder blättern</div>
@@ -422,6 +474,80 @@ input[type=range]::-moz-range-thumb{width:44px;height:44px;border-radius:50%;bac
           <div class="card"><div class="mono" style="color:var(--warn)">Das machen Sie</div>
             <ul class="list"><li>Freigeben, was automatisiert wird</li><li>Exporte bereitstellen</li><li>Die wenigen unklaren Fälle prüfen</li></ul></div>
         </div>
+      </div></div></div>
+    </section>
+
+    <!-- Preise (Quelle: 30-resources/Gaind Preisblatt Zahlungsabgleich, Stand Oktober 2026) -->
+    <section class="view" id="pricing">
+      <div class="offer-head" style="padding-bottom:18px">
+        <div class="offer-title">
+          <button class="back" data-home aria-label="Zurück"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+          <h2>Preise Zahlungsabgleich</h2>
+          <span class="chip stand">Stand Oktober 2026 · netto</span>
+        </div>
+      </div>
+      <div class="stage"><div class="panel" style="height:100%"><div class="panel-inner">
+        <div class="mono eyebrow">Managed Service · für Apotheken mit ADG S3000 und Rechnungsgeschäft</div>
+        <h3>Wir betreiben Ihren Zahlungsabgleich.</h3>
+        <p class="intro">Sie laden den Bankexport hoch und bekommen die fertige Importdatei für ADG zurück. Jede Zahlung wird über die Rechnungsnummer zugeordnet, Unklares steht auf einer Prüfliste. Betrieb, Überwachung und Pflege übernehmen wir.</p>
+        <p class="quote-line">Aus der Praxis: 83 % automatisch zugeordnet, rund 7 Stunden weniger Handarbeit im Monat (Markenbildchen-Apotheke Koblenz).</p>
+
+        <div class="ptable" role="table" aria-label="Was Sie zahlen">
+          <div class="pr ph-row" role="row">
+            <div role="columnheader"><div class="mono" style="margin-top:0;color:var(--muted-dark)">Was Sie zahlen</div></div>
+            <div role="columnheader"><div class="tier">Start</div><div class="tsub">Zahlungsabgleich</div><div class="mono">Monatlich</div></div>
+            <div role="columnheader"><div class="tier">Plus</div><div class="tsub">Zahlungsabgleich und bis zu 2 weitere Automatisierungen</div><div class="mono">Monatlich höchstens</div></div>
+            <div role="columnheader"><div class="tier">Komplett</div><div class="tsub">Zahlungsabgleich und bis zu 4 weitere Automatisierungen</div><div class="mono">Monatlich höchstens</div></div>
+          </div>
+          <div class="pr" role="row"><div class="lbl" role="rowheader"><b>Hauptapotheke</b></div><div class="val main">89 €</div><div class="val main">249 €</div><div class="val main">349 €</div></div>
+          <div class="pr" role="row"><div class="lbl" role="rowheader"><b>Je Filiale</b><span>desselben Inhabers</span></div><div class="val">+ 49 €</div><div class="val">+ 49 €</div><div class="val">+ 49 €</div></div>
+          <div class="pr" role="row"><div class="lbl" role="rowheader"><b>Viele Zahlungen</b><span>je weitere 1.200, alle Konten</span></div><div class="val">+ 49 €</div><div class="val">+ 49 €</div><div class="val">+ 49 €</div></div>
+          <div class="pr" role="row"><div class="lbl" role="rowheader"><b>Ihr Server</b><span>direkt, ohne Aufschlag, EU</span></div><div class="val">+ 20 bis 30 €</div><div class="val">+ 20 bis 30 €</div><div class="val">+ 20 bis 30 €</div></div>
+          <div class="pr" role="row"><div class="lbl" role="rowheader"><b>Einrichtung</b><span>einmalig</span></div><div class="val">999 €</div><div class="val">999 €<small>dazu ab 490 € je weitere Automatisierung</small></div><div class="val">999 €<small>dazu ab 490 € je weitere Automatisierung</small></div></div>
+        </div>
+
+        <div class="mono eyebrow sec">So rechnen wir</div>
+        <div class="grid3" style="margin-top:16px">
+          <div class="card"><h4>Weitere Automatisierungen</h4><p>Je nach Umfang ab 490 € einmalig und ab 49 € im Monat, größere Projekte zum Festpreis.</p><p><b>Obergrenze:</b> Sie zahlen höchstens den Betrag Ihrer Stufe. Beispiel Plus: 89 € + 2 × 99 € = 287 €, Sie zahlen 249 €.</p></div>
+          <div class="card"><h4>Filialen und viele Zahlungen</h4><p>Filialen desselben Inhabers: 49 € im Monat je Filiale, für alle Automatisierungen, Einrichtung inklusive. Andere Inhaber schließen einen eigenen Vertrag.</p><p>Viele Zahlungen: 49 € je weitere angefangene 1.200 Eingänge im Monat, alle Konten zusammen. Beispiel: 2.000 Eingänge, 89 € + 49 € = 138 €.</p></div>
+          <div class="card"><h4>Betreuung über den Betrieb hinaus</h4><p>Anpassungen auf Wunsch, Schulung, neue Auswertungen: 150 € je Stunde nach Absprache oder 2 Stunden im Monat für 300 €.</p></div>
+        </div>
+
+        <div class="grid2">
+          <div class="card dark calc-ex"><div class="mono" style="color:var(--accent-soft)">Rechenbeispiel · Stufe Start</div>
+            <p style="margin-top:12px;font-size:20px;color:#e2e2ea">Inhaber mit Hauptapotheke und 3 Filialen, 3.000 Zahlungseingänge im Monat über alle Konten.</p>
+            <div class="formula">89 € + 3 × 49 € + 2 × 49 €</div>
+            <div class="amount">334<span>€ im Monat</span></div><div class="per">zuzüglich Server</div>
+            <div class="rows"><div><span>Hauptapotheke</span><b>89 €</b></div><div><span>3 Filialen je 49 €</span><b>147 €</b></div><div><span>3.000 Eingänge: 2 × je weitere angefangene 1.200</span><b>98 €</b></div><div><span>Gleicher Fall in Plus / Komplett</span><b>höchstens 494 € / 594 €</b></div></div>
+          </div>
+          <div class="card"><h4>Gut zu wissen</h4><ul class="list">
+            <li>Eingänge zählen über alle Konten zusammen.</li>
+            <li>Die Einrichtung der Filialen ist inklusive.</li>
+            <li>Ihren Server zahlen Sie direkt, ohne Aufschlag, Standort EU.</li>
+            <li>Im Rechenbeispiel liegt das erste Jahr bei rund 5.300 €, mit Einrichtung und Server.</li>
+          </ul></div>
+        </div>
+
+        <div class="split" style="margin-top:46px">
+          <div class="card dark"><div class="mono" style="color:var(--accent-soft)">Das übernehmen wir</div>
+            <ul class="list"><li>Server-Betreuung, Updates und Sicherung</li><li>Überwachung und Störungsbehebung</li><li>Prüfliste für alle unklaren Zahlungen</li><li>Anpassung an Formatänderungen</li><li>Monatsbericht</li><li>Auftragsverarbeitung und §&nbsp;203&nbsp;StGB</li></ul></div>
+          <div class="card"><div class="mono" style="color:var(--warn)">Das machen Sie</div>
+            <ul class="list"><li>Bankexport hochladen</li><li>Prüfliste klären</li><li>Datei in ADG importieren</li></ul></div>
+        </div>
+
+        <div class="mono eyebrow sec">Bedingungen · für alle Stufen gleich</div>
+        <div class="grid2" style="margin-top:16px">
+          <div class="card"><h4>Laufzeit</h4><p class="cond">12 Monate ab Abnahme, Verlängerung um je 12 Monate, Kündigung bis drei Monate vor Ablauf. Nutzungsrecht für die Vertragslaufzeit.</p></div>
+          <div class="card"><h4>Zahlung</h4><p class="cond">Einrichtung je zur Hälfte bei Auftrag und nach Abnahme. Monatsbeträge ab Abnahme im Voraus, bei Jahreszahlung 10 % Nachlass. Zahlungsziel 14 Tage.</p></div>
+        </div>
+
+        <div class="start-row" style="margin-top:22px">
+          <div class="card dark"><div class="mono" style="color:var(--accent-soft)">So starten Sie</div>
+            <div class="mini-steps"><div><b>Fit-Check, kostenlos</b>30 Minuten: Passt der Abgleich zu Ihnen?</div><div><b>Einrichtung und erster Lauf</b>an einem echten Monatsexport Ihrer Apotheke.</div><div><b>Abnahme</b>Sie importieren die erste Datei selbst in ADG.</div></div></div>
+          <div class="card"><div class="mono" style="color:var(--muted)">Voraussetzungen</div><ul class="list"><li>ADG S3000</li><li>Rechnungen mit Rechnungsnummer</li><li>Bankexport aus StarMoney oder DATEV Unternehmen online</li><li>Zugang zum Fakturierungs-Center</li></ul><p class="fine">Andere Bankformate nach Fit-Check zum Festpreis.</p></div>
+        </div>
+
+        <p class="p-foot">Alle Preise netto zuzüglich 19 % Umsatzsteuer. Diese Übersicht ist kein Angebot, verbindlich ist Ihr schriftliches Angebot.</p>
       </div></div></div>
     </section>
   </div>
@@ -735,7 +861,7 @@ function go(i,instant){
 $('#tabs').addEventListener('click',function(e){var t=e.target.closest('.tab');if(t)go(+t.dataset.i)});
 $('#prev').addEventListener('click',function(){go(idx-1)});
 $('#next').addEventListener('click',function(){go(idx+1)});
-$$('[data-open]').forEach(function(b){b.addEventListener('click',function(){var k=b.dataset.open;if(k==='trust')show('trust');else openOffer(k)})});
+$$('[data-open]').forEach(function(b){b.addEventListener('click',function(){var k=b.dataset.open;if(k==='trust'||k==='pricing'){show(k);var p=$('#'+k+' .panel');if(p)p.scrollTop=0}else openOffer(k)})});
 $$('[data-home]').forEach(function(b){b.addEventListener('click',function(){show('home')})});
 $('#homeBtn').addEventListener('click',function(){show('home')});
 document.addEventListener('keydown',function(e){if(current!=='offer'||document.querySelector('.sheet-bg.open'))return;if(e.key==='ArrowRight')go(idx+1);if(e.key==='ArrowLeft')go(idx-1)});
@@ -796,7 +922,8 @@ function resetForm(){form.reset();consentOn=false;$('#consent').classList.remove
   $('#leadForm').hidden=false;$('#leadThanks').hidden=true;clearTimeout(thanksT)}
 $('#leadBtn').addEventListener('click',function(){
   resetForm();
-  if(current==='offer'&&currentOffer){var v=OFFERS[currentOffer].interest;$$('#interest button').forEach(function(b){if(b.dataset.v===v)b.classList.add('on')})}
+  var v=current==='offer'&&currentOffer?OFFERS[currentOffer].interest:current==='pricing'?'Rechnungsabgleich':'';
+  if(v){$$('#interest button').forEach(function(b){if(b.dataset.v===v)b.classList.add('on')})}
   $('#storageWarn').classList.toggle('show',!storageOk);
   openSheet($('#leadSheet'));
 });

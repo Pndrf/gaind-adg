@@ -1,8 +1,9 @@
 /* gaind ADG 2026: Offline-Cache für die Messe-App */
-var CACHE='gaind-adg-6890fb2bff';
+var CACHE='gaind-adg-3dddc11bb4';
 var ASSETS=['./','manifest.json','icon-180.png'];
 self.addEventListener('install',function(e){
-  e.waitUntil(caches.open(CACHE).then(function(c){return c.addAll(ASSETS)}).then(function(){return self.skipWaiting()}));
+  /* cache:'reload' am HTTP-Cache vorbei (Pages schickt max-age=600), sonst landet nach einem Update evtl. die alte Seite im neuen Cache */
+  e.waitUntil(caches.open(CACHE).then(function(c){return c.addAll(ASSETS.map(function(a){return new Request(a,{cache:'reload'})}))}).then(function(){return self.skipWaiting()}));
 });
 self.addEventListener('activate',function(e){
   e.waitUntil(caches.keys().then(function(keys){return Promise.all(keys.filter(function(k){return k.indexOf('gaind-adg-')===0&&k!==CACHE}).map(function(k){return caches.delete(k)}))}).then(function(){return self.clients.claim()}));
